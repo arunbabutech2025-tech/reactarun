@@ -35,4 +35,31 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    ne
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vite-app
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5163AB4C157B4CE480F558ED12E736F0 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F0D04FE9F320423E9966C8C5A6F8956F }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0B08EBDE6E754803B3E2F383A1D390E6 }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: reactarun
+          slot-name: Production
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./dist
+
+      - name: Show live site URL
+        run: echo "✅ Deployment successful! Visit: https://reactarun.azurewebsites.net"
