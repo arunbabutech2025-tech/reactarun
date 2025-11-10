@@ -61,5 +61,6 @@ jobs:
         with:
           app-name: 'reactarun'
           slot-name: 'Production'
-          package: .
+          package: ./build
+
           
