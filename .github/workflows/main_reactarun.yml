@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# This workflow builds and deploys a Vite React app to Azure App Service
-
 name: Build and Deploy Vite React App to Azure Web App - reactarun
 
 on:
@@ -13,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read
 
     steps:
       - name: Checkout code
@@ -22,10 +19,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x' # Stable LTS for Azure
+          node-version: '20.x'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Vite app
         run: npm run build
@@ -34,34 +31,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vite-app
-          path: ./dist # Vite build output folder
+          path: ./dist
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write # For Azure authentication
-      contents: read
-
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vite-app
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5163AB4C157B4CE480F558ED12E736F0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F0D04FE9F320423E9966C8C5A6F8956F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0B08EBDE6E754803B3E2F383A1D390E6 }}
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'reactarun'
-          slot-name: 'Production'
-          package: ./dist # ✅ IMPORTANT for Vite apps
-
-      - name: Show live site URL
-        run: echo "✅ Deployment successful! Visit: https://reactarun.azurewebsites.net"
+    ne
