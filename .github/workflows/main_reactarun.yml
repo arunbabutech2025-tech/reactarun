@@ -62,5 +62,6 @@ jobs:
           package: ./dist
 
       - name: Show live site URL
-        run: echo "✅ Deployment successful! Visit: https://reactarun.azurewebsites.net"
+        run: echo "✅ Deployment successful!"
+
 
